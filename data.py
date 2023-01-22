@@ -35,10 +35,13 @@ def read_from_csv_to_array( filename ):
                 else:
                     r = int(c) if c.isnumeric() else c
                 row_values.append( r )
-            ar = np.array( row_values )
+            ar = np.array( row_values, dtype=object )
             entries.append( ar )
-    return np.array( entries )
+    return np.array( entries, dtype=object)
 
+def check_array_data( ad ):
+    """check that the array have the proper format"""
+    pass
 
 if __name__ == "__main__":
     f = "data1.csv"
