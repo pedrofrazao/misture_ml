@@ -7,7 +7,7 @@ small_value=0.01
 
 def pp_calc_for_class( catvar,  dim_multinomial ):
     """ sum all classe vectors and """
-    npoint = catvar.shape[0]  # number of observations
+    npoint = catvar.shape[0]  # number of observationsy
     t = sum(catvar) / ( npoint * dim_multinomial )
     return t
 
@@ -24,8 +24,7 @@ def init_est_prob( y, dim_multinomial  ):
         pp[i] = pp[i] + ( small_value * dim_multinomial * np.random.rand() )
         pp[i] = pp[i] / pp[i].sum()
     return pp
-    #est_prob[0][1][category1] = (sum data[:][1][category1])/len(data)/dim_multinomial + small_value * dim_observations * rand() 
-    pass
+
 
 def init(y):
     pass
@@ -46,3 +45,6 @@ if __name__ == "__main__":
     dim_multinomial = mml_data.get_sum_classes( y )
     est_prob = init_est_prob( y, dim_multinomial )
     print( est_prob )
+    k=10   # segments init
+    est_pp = [ 1/k for i in range(0,k) ]
+    print(est_pp)
