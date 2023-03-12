@@ -18,6 +18,7 @@ def read_from_csv_to_list( filename ):
                     row_values.append( int(c) if c.isnumeric() else c )
             entries.append( row_values )
     return entries
+
             
 def read_from_csv_to_array( filename ):
     """parse the CSV file and add all the data to a array"""
@@ -40,38 +41,39 @@ def read_from_csv_to_array( filename ):
     return np.array( entries, dtype=object)
 
 
-def check_array_type_on_array_class( ad ):
+def check_array_type_on_array_class( arraycolumn ):
     """check if all values are of the same type on the array"""
     error = None
-    class_sum = ad[0].sum()
-    for i in range(1,len(ad)):
-        sum=ad[i].sum()
+    class_sum = arraycolumn[0].sum()
+    for i in range(1,len(arraycolumn)):
+        sum=arraycolumn[i].sum()
         if(class_sum != sum):
             error=f'found a different sum for class in position {i+1}: got {sum} and expecting {class_sum}'
             break
     return error
 
 
-def check_array_type_values( ad ):
+def check_array_type_values( arraycolumn ):
     """check if all values are of the same type on the array"""
     error = None
-    vtype = type( ad[0] )
+    vtype = type( arraycolumn[0] )
     if( vtype == np.ndarray ):
-        return check_array_type_on_array_class( ad )
-    for i in range(1,len(ad)):
-        if( type(ad[i]) != vtype ):
+        return check_array_type_on_array_class( arraycolumn )
+    for i in range(1,len(arraycolumn)):
+        if( type(arraycolumn[i]) != vtype ):
             error=f'found a different type on array in position {i+1}'
             break
     return error
 
 
-def check_array_data( ad ):
+def check_array_data( arraydata ):
     """check that the array have the proper format"""
-    r,c=ad.shape
+    r,c=arraydata.shape
     for i in range(0,c):
-        err = check_array_type_values( ad[:,i] )
+        err = check_array_type_values( arraydata[:,i] )
         if(err is not None):
             print(f'ERROR: on column {i} - {err}')
+
 
 if __name__ == "__main__":
     f = "data1.csv"
