@@ -3,7 +3,7 @@ import numpy as np
 
 import data as mml_data
 
-small_value=np.float128(0.1)
+small_value=0.01
 
 def pp_calc_for_class( catvar,  dim_multinomial ):
     """ sum all classe vectors and """
@@ -17,8 +17,13 @@ def pp_calc( y, dim_multinomial ):
     t = [ pp_calc_for_class( y[:,i], dim_multinomial ) for i in range(0,y.shape[1]) ]
     return t
 
-def init_est_prob( y ):
+def init_est_prob( y, dim_multinomial  ):
     """ init est_prob structure """
+    pp = pp_calc( y, dim_multinomial )
+    for i in range(0,len(pp)):
+        pp[i] = pp[i] + ( small_value * dim_multinomial * np.random.rand() )
+        pp[i] = pp[i] / pp[i].sum()
+    return pp
     #est_prob[0][1][category1] = (sum data[:][1][category1])/len(data)/dim_multinomial + small_value * dim_observations * rand() 
     pass
 
@@ -39,5 +44,5 @@ if __name__ == "__main__":
         print( errstr )
 
     dim_multinomial = mml_data.get_sum_classes( y )
-    pp = pp_calc( y, dim_multinomial )
-    print(pp)
+    est_prob = init_est_prob( y, dim_multinomial )
+    print( est_prob )
