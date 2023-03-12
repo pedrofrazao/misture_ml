@@ -68,11 +68,27 @@ def check_array_type_values( arraycolumn ):
 
 def check_array_data( arraydata ):
     """check that the array have the proper format"""
+    errstr = None
     r,c=arraydata.shape
+    sum_by_class = np.zeros(c)
     for i in range(0,c):
         err = check_array_type_values( arraydata[:,i] )
         if(err is not None):
-            print(f'ERROR: on column {i} - {err}')
+            errstr = 'ERROR: on column {i} - {err}'
+            return errstr
+        sum_by_class[i] = arraydata[0,i].sum() if( type(arraydata[0,i]) == np.ndarray ) else -1
+
+    # check if all classes need to sum the same value
+    sum_val = -1
+    for i in range(0,c):
+        if( sum_by_class[i] == -1 ):
+            continue
+        else:
+            if( sum_val == -1 ):
+                sum_val = sum_by_class[i]
+            elif( sum_val != sum_by_class[i] ):
+                errstr = f"ERROR: class {i} don't sum to {sum_val}"
+                return errstr
 
 
 if __name__ == "__main__":
@@ -81,4 +97,6 @@ if __name__ == "__main__":
         f = sys.argv[1]
     r = read_from_csv_to_array( f )
     print(r)
-    check_array_data( r )
+    errstr = check_array_data( r )
+    if( errstr is not None ):
+        print( errstr )
